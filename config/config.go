@@ -5,6 +5,7 @@ import (
 	"user-service/common/util"
 
 	"github.com/sirupsen/logrus"
+	_ "github.com/spf13/viper/remote"
 )
 
 var Config AppConfig
@@ -15,7 +16,8 @@ type AppConfig struct {
 	AppEnv                 string   `json:"appEnv"`
 	SignatureKey           string   `json:"signatureKey"`
 	Database               Database `json:"database"`
-	RateLimiterMaxRequests int      `json:"rateLimiterMaxRequests"`
+	EnableRateLimiter      bool     `json:"enableRateLimiter"`
+	RateLimiterMaxRequests float64  `json:"rateLimiterMaxRequests"`
 	RateLimiterTimeSeconds int      `json:"rateLimiterTimeSeconds"`
 	JwtSecretKey           string   `json:"jwtSecretKey"`
 	JwtExpirationTime      int      `json:"jwtExpirationTime"`
@@ -33,7 +35,7 @@ type Database struct {
 	MaxIdleTime            int    `json:"maxIdleTime"`
 }
 
-func init() {
+func Init() {
 	err := util.BindFromJSON(&Config, "config.json", ".")
 	if err != nil {
 		logrus.Infof("failed to bind config: %v", err)

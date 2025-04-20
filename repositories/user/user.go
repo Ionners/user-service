@@ -23,6 +23,8 @@ type IUserRepository interface {
 	FindByUsername(context.Context, string) (*models.User, error)
 	FindByEmail(context.Context, string) (*models.User, error)
 	FindByUUID(context.Context, string) (*models.User, error)
+	FindByIDWithRole(ctx context.Context, id uint) (*models.User, error)
+	// Preload(column string) *gorm.DB
 }
 
 func NewUserRepository(db *gorm.DB) IUserRepository {
@@ -69,7 +71,7 @@ func (r *UserRepository) FindByUsername(ctx context.Context, username string) (*
 	var user models.User
 	err := r.db.WithContext(ctx).
 		Preload("Role").
-		Where("username = ?", username).
+		Where("user_name = ?", username).
 		First(&user).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -109,3 +111,15 @@ func (r *UserRepository) FindByUUID(ctx context.Context, uuid string) (*models.U
 	}
 	return &user, nil
 }
+
+func (r *UserRepository) FindByIDWithRole(ctx context.Context, id uint) (*models.User, error) {
+	var user models.User
+	if err := r.db.WithContext(ctx).Preload("Role").First(&user, id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+// func (r *UserRepository) Preload(column string) *gorm.DB {
+// 	return r.db.Preload(column)
+// }

@@ -1,0 +1,22 @@
+{
+    "port": 8001,
+    "appName": "user-service",
+    "appEnv": "local",
+    "signatureKey": "",
+    "database": {
+        "host": "host.docker.internal",
+        "port": 5432,
+        "name": "",
+        "username": "",
+        "password": "",
+        "maxOpenConnection": 10,
+        "maxLifetimeConnection": 10,
+        "maxIdConnection": 10,
+        "maxIdleTime": 10
+    },
+    "enableRateLimiter": false,
+    "rateLimiterMaxRequest": 1000,
+    "rateLimiterTimeSecond": 60,
+    "jwtSecretKey": "",
+    "jwtExpirationTime": 1440
+}

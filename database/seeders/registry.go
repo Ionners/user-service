@@ -7,14 +7,14 @@ type Registry struct {
 }
 
 type ISeederRegistry interface {
-	run()
+	Run()
 }
 
 func NewSeederRegistry(db *gorm.DB) ISeederRegistry {
 	return &Registry{db: db}
 }
 
-func (s *Registry) run() {
+func (s *Registry) Run() {
 	// Run all seeders here
 	RunRoleSeeder(s.db)
 	RunUserSeeder(s.db)
